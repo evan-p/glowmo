@@ -25,7 +25,7 @@ You can use glow.stop(), glow.start(), glow.startLoop(), glow.toggle(), glow.tog
 ### Constructor commands
 
 - from & to : specify the variables of starting and ending position of a transition. These variables will be set as keys to the object of the handler function. 'from' is optional if not the first transition
-- in : specify the number of seconds the transition will last, followed by an 's'. This is required for every transition
+- in : specify the number of seconds the transition will last, followed by an 's'. Required for every transition
 - then : use 'then' right before a transition the precedes another one
 - wait : specify the number of seconds that no change is made, in seconds, followed by an 's'
 - [] : use brackets to create loops. Loops can contain other loops
