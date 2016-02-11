@@ -22,3 +22,13 @@ glow.parse('from x=0,y=0 to x=300 in 0.4s wait 0.5s [to x=600 in 0.3s then to y=
 
 You can use glow.stop(), glow.start(), glow.startLoop(), glow.toggle(), glow.toggleLoop() to control the animation(s). To jump to a specific point in the animation, use glow.makeTransition(p), where p:0-1
 
+### Constructor commands
+
+- from & to : specify the variables of starting and ending position of a transition. These variables will be set as keys to the object of the handler function. 'from' is optional if not the first transition
+- in : specify the number of seconds the transition will last, followed by an 's'. This is required for every transition
+- then : use 'then' right before a transition the precedes another one
+- wait : specify the number of seconds that no change is made, in seconds, followed by an 's'
+- [] : use brackets to create loops. Loops can contain other loops
+- * : use '*' right after loops to specify the number of iterations
+- circle : placed right after loops or '*', indicates that each second iteration will transit from end to start
+
