@@ -1,6 +1,6 @@
-# glow
+# Glowmo
 
-Use glow.js to animate property data and create simple to complex animations.
+Use glowmo.js to animate property data and create simple to complex animations.
 
 - Specify how to handle the animation-data using callbacks
 - Create the animations using a simple language parsing system
