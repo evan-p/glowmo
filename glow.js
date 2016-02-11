@@ -1,4 +1,4 @@
-var Glow = function(){
+var Glowmo = function(){
 var Glowmo = function(options){
 	var _this = this;
 	var jobs = [];
