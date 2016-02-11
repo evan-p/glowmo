@@ -532,10 +532,10 @@ var Glow = function(options){
 				return true
 			}
 
-			match = query.match(/^\s*in circle/)
+			match = query.match(/^\s*circle/)
 			if(match!=null){
 				query = query.substring(match[0].length);
-				console.log('parse inCircle')
+				console.log('parse Circle')
 				_this.inCircle();
 				return true
 			}
