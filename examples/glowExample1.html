@@ -1,0 +1,46 @@
+
+<script src="glow.js"></script>
+
+<style>
+body{
+	position: absolute;
+}
+.container{
+	position:absolute;
+}
+.knob-container{
+	position: fixed;
+    bottom: 0;
+    right: 30;
+}
+.blue {
+	background: blue;
+}
+.red {
+	background: red;
+}
+.box{
+	width:80px;
+	height:80px;
+	margin:5px;
+}
+</style>
+<body>
+	<div class="container">
+		<div onclick='glow.toggleLoop()' id="blue-box1" class="blue box"></div>
+	</div>
+	
+</body>
+<script type="text/javascript">
+
+var blueBox = document.getElementById("blue-box1");
+
+var fBlue = function(o){
+	blueBox.style.setProperty('margin-top', o.y+'px');
+	blueBox.style.setProperty('margin-left', o.x+'px');
+};
+
+var glow = new Glow({handler: fBlue});
+glow.parse('from x=0,y=0 to x=300 in 0.4s wait 0.5s [to x=600 in 0.3s then to y=400 in 0.4s then to x=300 in 0.4s then to y=0 in 0.4s]*3 wait 0.3s to x=0 in 0.2s wait 0.5s');
+
+</script>
