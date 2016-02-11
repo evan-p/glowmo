@@ -2,7 +2,7 @@
 
 Use glowmo.js to animate property data and create simple to complex animations.
 
-- Specify how to handle the animation-data using callbacks
+- Specify how to handle the animated properties using callbacks
 - Create the animations using a simple language parsing system
 
 ### Example
