@@ -12,11 +12,11 @@ var Glowmo = function(options){
 				p = p % 1 || (p!=0) + 0;
 			}
 			if(p>1){
-				job.glow.makeTransition(1);
+				job.glow.seek(1);
 				job.glow.stop();
 				console.log('stoped')
 			}else{
-				job.glow.makeTransition(p);
+				job.glow.seek(p);
 			}
 		});
 		window.requestAnimationFrame(update);
@@ -385,7 +385,7 @@ var Glow = function(options){
 		return this;
 	};
 
-	this.makeTransition = function(p){
+	this.seek = function(p){
 		lastP = p;
 		return MainTimeline.makeTransition(p);
 	};
