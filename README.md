@@ -29,7 +29,7 @@ You can use stop(), start(), loop(), toggle(), toggleLoop() and seek(p) to contr
 - in : specify the number of seconds the transition will last, followed by an 's'. Required for every transition
 - then : use 'then' right before a transition the precedes another one
 - wait : specify the number of seconds that no change is made, in seconds, followed by an 's'
-- [ ] : use brackets to create loops. Loops can contain other loops
+- [  \] : use brackets to create loops. Loops can contain other loops
 - * : place right after loops to specify the number of iterations
 - circle : placed right after loops or '*', indicates that each second iteration will transit from end to start
 
