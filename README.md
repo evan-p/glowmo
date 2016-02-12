@@ -21,7 +21,7 @@ glow.parse('from x=0,deg=0 to x=200 in 0.4s wait 0.5s [to x=400 in 0.5s then to 
 glow.loop();
 ```
 
-You can use stop(), start(), loop(), toggle(), toggleLoop() and seek(p) to control the animation(s).
+Here's a link to this [example](http://static.jzinx.com/glowmo/examples/glowExample1.html). You can use stop(), start(), loop(), toggle(), toggleLoop() and seek(p) to control the animation(s).
 
 ### Constructor commands
 
