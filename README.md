@@ -12,8 +12,8 @@ var blueBox = document.getElementById("blue-box1");
 
 // this is your data handler
 var fBlue = function(o){
-	blueBox.style.setProperty('margin-top', o.y+'px');
 	blueBox.style.setProperty('margin-left', o.x+'px');
+	blueBox.style.transform = `rotate(${o.deg}deg)`
 };
 
 var glow = new Glow({handler: fBlue});
