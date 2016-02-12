@@ -18,9 +18,10 @@ var fBlue = function(o){
 
 var glow = new Glow({handler: fBlue});
 glow.parse('from x=0,y=0 to x=300 in 0.4s wait 0.5s [to x=600 in 0.3s then to y=400 in 0.4s then to x=300 in 0.4s then to y=0 in 0.4s]*3 circle wait 0.3s to x=0 in 0.2s wait 0.5s');
+glow.loop();
 ```
 
-You can use stop(), start(), startLoop(), toggle(), toggleLoop() and seek(p) to control the animation(s).
+You can use stop(), start(), loop(), toggle(), toggleLoop() and seek(p) to control the animation(s).
 
 ### Constructor commands
 

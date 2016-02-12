@@ -345,7 +345,7 @@ var Glow = function(options){
 		return this;
 	};
 
-	this.loop = function(){
+	this.startLoop = function(){
 		if(current.type!='timeline'){
 			current = current.parent;
 		}
@@ -381,7 +381,7 @@ var Glow = function(options){
 	this.create = function(){
 		var o = MainTimeline.finalize({previousTo:startFrom});
 		_this.duration = o.duration;
-		_this.makeTransition(0);
+		_this.seek(0);
 		return this;
 	};
 
@@ -395,7 +395,7 @@ var Glow = function(options){
 		glowmo.addJob(_this)
 	}
 
-	this.startLoop = function(){
+	this.loop = function(){
 		paused = false;
 		glowmo.addJob(_this,{loop:'loop'})
 	}
@@ -415,7 +415,7 @@ var Glow = function(options){
 
 	this.toggleLoop = function(){
 		if(paused){
-			_this.startLoop()
+			_this.loop()
 		}else{
 			_this.stop()
 		}
@@ -493,8 +493,8 @@ var Glow = function(options){
 			match = query.match(/^\s*\[/)
 			if(match!=null){
 				query = query.substring(match[0].length);
-				console.log('parse loop')
-				_this.loop();
+				console.log('parse startLoop')
+				_this.startLoop();
 				return true
 			}
 
