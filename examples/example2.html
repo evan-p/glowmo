@@ -1,0 +1,41 @@
+
+<script src="../glowmo.js"></script>
+
+<style>
+body{
+	position: absolute;
+}
+.container{
+	position:absolute;
+}
+.blue {
+	background: blue;
+}
+.box{
+	width:675px;
+	height:400px;
+	margin:5px;
+	background: url(http://madmikesamerica.com/wp-content/uploads/2015/03/happy-puppy.jpg);
+}
+</style>
+<body>
+	<div class="container" onmouseout='glow.reverse()' onmouseover='glow.start()'>
+		<div  class="blue box"></div>
+	</div>
+	
+</body>
+<script type="text/javascript">
+
+var box = document.querySelector(".box");
+
+var fHandler = function(o){ 
+	box.style.transform = `rotate(${o.deg}deg)`
+	box.style['border-radius'] = o.rad + 'px'
+};
+
+var glow = new Glowmo({handler: fHandler});
+glow.parse('from deg=0,rad=0 to deg=360, rad=200 in 0.6s with easeInOutExpo');
+
+
+
+</script>

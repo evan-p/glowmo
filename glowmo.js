@@ -8,23 +8,30 @@ var Glowmo = function(options){
 		jobs.forEach(function(job){
 			var timePassed = now - job.startTime;
 			var p = timePassed/(job.glow.duration*1000);
-			if(job.loop == 'loop'){
+			if(job.loop){
 				p = p % 1 || (p!=0) + 0;
 			}
 			if(p>1){
-				job.glow.seek(1);
+				p = 1;
 				job.glow.stop();
 				console.log('stoped')
-			}else{
-				job.glow.seek(p);
 			}
+			// reverse
+			if(job.reverse){
+				p = 1 - p;
+			}
+			job.glow.seek(p);
+			
 		});
 		window.requestAnimationFrame(update);
 	};
 
 	this.addJob = function(glow, options){
-		var o = {glow:glow, startTime: Date.now() - glow.getLastP()*glow.duration*1000};
+		var now = Date.now();
+		var o = {glow:glow};
 		o.loop = options && options.loop ? options.loop : null;
+		o.reverse = options && options.reverse ? options.reverse : null;
+		o.startTime = !o.reverse ? now - glow.getLastP()*glow.duration*1000 : now - (1-glow.getLastP())*glow.duration*1000; // TODO
 		jobs.push(o);
 	};
 
@@ -39,15 +46,197 @@ var Glowmo = function(options){
 
 var glowmo = new Glowmo();
 
+//thanks to danro/jquery-easing
+var easingFunctions = {
+	easeInQuad: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return c*(t/=d)*t + b;
+	},
+	easeOutQuad: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return -c *(t/=d)*(t-2) + b;
+	},
+	easeInOutQuad: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		if ((t/=d/2) < 1) return c/2*t*t + b;
+		return -c/2 * ((--t)*(t-2) - 1) + b;
+	},
+	easeInCubic: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return c*(t/=d)*t*t + b;
+	},
+	easeOutCubic: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return c*((t=t/d-1)*t*t + 1) + b;
+	},
+	easeInOutCubic: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		if ((t/=d/2) < 1) return c/2*t*t*t + b;
+		return c/2*((t-=2)*t*t + 2) + b;
+	},
+	easeInQuart: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return c*(t/=d)*t*t*t + b;
+	},
+	easeOutQuart: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return -c * ((t=t/d-1)*t*t*t - 1) + b;
+	},
+	easeInOutQuart: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		if ((t/=d/2) < 1) return c/2*t*t*t*t + b;
+		return -c/2 * ((t-=2)*t*t*t - 2) + b;
+	},
+	easeInQuint: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return c*(t/=d)*t*t*t*t + b;
+	},
+	easeOutQuint: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return c*((t=t/d-1)*t*t*t*t + 1) + b;
+	},
+	easeInOutQuint: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		if ((t/=d/2) < 1) return c/2*t*t*t*t*t + b;
+		return c/2*((t-=2)*t*t*t*t + 2) + b;
+	},
+	easeInSine: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+	},
+	easeOutSine: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return c * Math.sin(t/d * (Math.PI/2)) + b;
+	},
+	easeInOutSine: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+	},
+	easeInExpo: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+	},
+	easeOutExpo: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+	},
+	easeInOutExpo: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		if (t==0) return b;
+		if (t==d) return b+c;
+		if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+		return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+	},
+	easeInCirc: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return -c * (Math.sqrt(1 - (t/=d)*t) - 1) + b;
+	},
+	easeOutCirc: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		return c * Math.sqrt(1 - (t=t/d-1)*t) + b;
+	},
+	easeInOutCirc: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		if ((t/=d/2) < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;
+		return c/2 * (Math.sqrt(1 - (t-=2)*t) + 1) + b;
+	},
+	easeInElastic: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+	},
+	easeOutElastic: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+	},
+	easeInOutElastic: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		var s=1.70158;var p=0;var a=c;
+		if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);
+		if (a < Math.abs(c)) { a=c; var s=p/4; }
+		else var s = p/(2*Math.PI) * Math.asin (c/a);
+		if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+		return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;
+	},
+	easeInBack: function ( t, b, c, d, s) {
+		b=0;
+		d=c=1;
+		if (s == undefined) s = 1.70158;
+		return c*(t/=d)*t*((s+1)*t - s) + b;
+	},
+	easeOutBack: function ( t, b, c, d, s) {
+		b=0;
+		d=c=1;
+		if (s == undefined) s = 1.70158;
+		return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+	},
+	easeInOutBack: function ( t, b, c, d, s) {
+		b=0;
+		d=c=1;
+		if (s == undefined) s = 1.70158; 
+		if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+		return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+	},
+	easeOutBounce: function ( t, b, c, d) {
+		b=0;
+		d=c=1;
+		if ((t/=d) < (1/2.75)) {
+			return c*(7.5625*t*t) + b;
+		} else if (t < (2/2.75)) {
+			return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+		} else if (t < (2.5/2.75)) {
+			return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+		} else {
+			return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+		}
+	}
+};
+
 var Transition = function(options){
 	var from = options.from;
 	var to = options.to;
 	var transition = options.transition;
 	var callback = options.callback;
+	var easeFunction = function(p){return p};
 	this.duration = options.duration;
 	this.parent = options.parent;
 	this.level = options.level ? options.level : 0;
 	var _this = this;
+
+	this.setEase = function(f){
+		easeFunction = f;
+	};
 
 	this.setFrom = function(o){
 		from = o;
@@ -110,6 +299,7 @@ var Transition = function(options){
 		}else if(p<0){
 			p=0;
 		}
+		p = easeFunction(p);
 		var obj = {};
 		Object.keys(from).forEach(function(key){
 			obj[key] = from[key]*(1-p) + to[key]*(p);
@@ -262,6 +452,7 @@ var Glow = function(options){
 	var MainTimeline = new Timeline({level:0});
 	MainTimeline.parent = MainTimeline;
 	var current = MainTimeline;
+	var state = 'paused';
 	var startFrom;
 	var _this = this;
 	var notify = function(){
@@ -309,6 +500,13 @@ var Glow = function(options){
 	this.in = function(d){
 		configureTransition();
 		current.duration = d;
+		notify();
+		return this;
+	}
+
+	this.with = function(f){
+		configureTransition();
+		current.setEase(f);
 		notify();
 		return this;
 	}
@@ -391,22 +589,45 @@ var Glow = function(options){
 	};
 
 	this.start = function(){
-		paused = false;
+		if(state == 'start'){
+			return;
+		}else if(state != 'paused'){
+			_this.stop();
+		}
+		state = 'start'
 		glowmo.addJob(_this)
 	}
 
+	this.reverse = function(){
+		if(state == 'reverse'){
+			return;
+		}else if(state != 'paused'){
+			_this.stop();
+		}
+		state = 'reverse';
+		glowmo.addJob(_this, {reverse:true})
+	}
+
 	this.loop = function(){
-		paused = false;
-		glowmo.addJob(_this,{loop:'loop'})
+		if(state == 'loop'){
+			return;
+		}else if(state != 'paused'){
+			_this.stop();
+		}
+		state = 'loop';
+		glowmo.addJob(_this,{loop:true})
 	}
 
 	this.stop = function(){
-		paused = true;
+		if(state == 'paused'){
+			return;
+		}
+		state = 'paused';
 		glowmo.removeJob(_this)
 	}
 
 	this.toggle = function(){
-		if(paused){
+		if(state=='paused'){
 			_this.start()
 		}else{
 			_this.stop()
@@ -414,7 +635,7 @@ var Glow = function(options){
 	}
 
 	this.toggleLoop = function(){
-		if(paused){
+		if(state=='paused'){
 			_this.loop()
 		}else{
 			_this.stop()
@@ -425,6 +646,13 @@ var Glow = function(options){
 		var objRegex = /^(?:\s*\w+\s*=\s*-?\s*\d+(?:\.\d+)?\s*,*)+/;
 		var numRegex = /^\s*\d+(?:.\d+)*/;
 		var secRegex = /^\s*\d+(?:.\d+)*s/;
+		var easingRegex = new RegExp(`^\\s*(${Object.keys(easingFunctions).join('|')})`);
+
+		var parseNextEasing = function(){
+			var match = query.match(easingRegex); 
+			query = query.substring(match[0].length);
+			return easingFunctions[match[1]];
+		}
 
 		var parseNextObject = function(str){
 			var objMatch = query.match(objRegex);
@@ -540,12 +768,22 @@ var Glow = function(options){
 				return true
 			}
 
+			match = query.match(/^\s*with/)
+			if(match!=null){
+				query = query.substring(match[0].length);
+				var easeFunction = parseNextEasing();
+				console.log('parse with')
+				_this.with(easeFunction);
+				return true
+			}
+
 			return false;
 
 		}
 
 		while(parseNext()){};
 		_this.create();
+		return(_this);
 	}
 
 }

@@ -1,0 +1,39 @@
+
+<script src="../glowmo.js"></script>
+
+<style>
+body{
+	position: absolute;
+}
+.container{
+	position:absolute;
+}
+.blue {
+	background: blue;
+}
+.box{
+	width:90px;
+	height:90px;
+	margin:5px;
+}
+</style>
+<body>
+	<div class="container">
+		<div  class="blue box"></div>
+	</div>
+	
+</body>
+<script type="text/javascript">
+
+var box = document.querySelector(".box");
+
+var fHandler = function(o){
+	box.style.transform = `translateX(${o.x}px) rotate(${o.deg}deg)`
+};
+
+var glow = new Glowmo({handler: fHandler});
+glow.parse('from x=0 to x=300 in 0.7s with easeInQuad [from deg=0 to deg = 90 in 0.3s with easeInExpo]*3 wait 1s to x=0 in 1s with easeOutBounce').loop();
+
+
+
+</script>
