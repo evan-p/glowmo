@@ -504,9 +504,9 @@ var Glow = function(options){
 		return this;
 	}
 
-	this.with = function(f){
+	this.with = function(fName){
 		configureTransition();
-		current.setEase(f);
+		current.setEase(easingFunctions[fName]);
 		notify();
 		return this;
 	}
@@ -580,7 +580,7 @@ var Glow = function(options){
 		var o = MainTimeline.finalize({previousTo:startFrom});
 		_this.duration = o.duration;
 		_this.seek(0);
-		return this;
+		return _this;
 	};
 
 	this.seek = function(p){
@@ -651,7 +651,7 @@ var Glow = function(options){
 		var parseNextEasing = function(){
 			var match = query.match(easingRegex); 
 			query = query.substring(match[0].length);
-			return easingFunctions[match[1]];
+			return match[1];
 		}
 
 		var parseNextObject = function(str){
