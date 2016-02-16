@@ -23,7 +23,7 @@ The above parse command is equivalent to:
 glow.from({x:0}).to({x:300}).in(0.7).with('easeInQuad').startLoop().from({deg:0}).to({deg:90}).in(0.3).with('easeInExpo').endLoop().times(3).wait(1).to({x:0}).in(1).with('easeOutBounce').create().loop();
 ```
 
-Here's a link to this [example](http://static.jzinx.com/glowmo/examples/example1.html). You can use stop(), start(), reverse, loop(), toggle(), toggleLoop() and seek(p) to control the animation(s).
+Here's a link to this [example](http://codepen.io/evan-p/pen/ZQPgVo). You can use stop(), start(), reverse, loop(), toggle(), toggleLoop() and seek(p) to control the animation(s).
 
 ### Constructor commands
 
